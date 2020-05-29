@@ -4,22 +4,22 @@
 #include "iwdg.h"
 
 
+//å“ˆå•Šå“ˆå“ˆå“ˆå“ˆå“ˆå•Šå“ˆå“ˆ//
 
-
-m_protocol_dev_typedef m_ctrl_dev;	//¶¨Òåmodbus¿ØÖÆÆ÷
-#define FLASH_USER_START_ADDR   ((uint32_t)0x08006000)   /*flash´æ´¢ÆğÊ¼µØÖ· */
+m_protocol_dev_typedef m_ctrl_dev;	//å®šä¹‰modbusæ§åˆ¶å™¨
+#define FLASH_USER_START_ADDR   ((uint32_t)0x08006000)   /*flashå­˜å‚¨èµ·å§‹åœ°å€ */
 u8 address;
-u8 Current_Lx_Add = 1;						//¼ÇÂ¼ÉÏÎ»»ú¶ÁÈ¡Êı¾İÊ±£¬µ±Ç°ÂÖÑ¯µÄFFU
-u8 Start_Lx_Add ;									//¼ÇÂ¼ÉÏÎ»»ú¶ÁÈ¡Êı¾İÊ±£¬¿ªÊ¼ÂÖÑ¯µÄFFUµØÖ·
+u8 Current_Lx_Add = 1;						//è®°å½•ä¸Šä½æœºè¯»å–æ•°æ®æ—¶ï¼Œå½“å‰è½®è¯¢çš„FFU
+u8 Start_Lx_Add ;									//è®°å½•ä¸Šä½æœºè¯»å–æ•°æ®æ—¶ï¼Œå¼€å§‹è½®è¯¢çš„FFUåœ°å€
 /*
 ********************************************************************************************************
-** º¯ÊıÃû³Æ:	   m_result mb_init    
-** ¹¦ÄÜ:		     ³õÊ¼»¯modbus        
-** °æ±¾:         V1.0  
-** ÈÕÆÚ£º        
-** ÊäÈë²ÎÊı:     checkmode£ºĞ£ÑéÄ£Ê½£º0,Ğ£ÑéºÍ;1,Òì»ò;2,CRC8;3,CRC16
-** Êä³ö²ÎÊı:     0,³É¹¦;ÆäËû,´íÎó´úÂë
-** ËµÃ÷:         ÎŞ
+** å‡½æ•°åç§°:	   m_result mb_init    
+** åŠŸèƒ½:		     åˆå§‹åŒ–modbus        
+** ç‰ˆæœ¬:         V1.0  
+** æ—¥æœŸï¼š        
+** è¾“å…¥å‚æ•°:     checkmodeï¼šæ ¡éªŒæ¨¡å¼ï¼š0,æ ¡éªŒå’Œ;1,å¼‚æˆ–;2,CRC8;3,CRC16
+** è¾“å‡ºå‚æ•°:     0,æˆåŠŸ;å…¶ä»–,é”™è¯¯ä»£ç 
+** è¯´æ˜:         æ— 
 ********************************************************************************************************
 */
 void mb_init()
@@ -37,21 +37,21 @@ void mb_init()
 		
 	}
 	GPIO_Config();
-  USART1_Config();//´®¿Ú1²ÎÊıÅäÖÃ³õÊ¼»¯
-	USART2_Config();//´®¿Ú2²ÎÊıÅäÖÃ³õÊ¼»¯
+  USART1_Config();//ä¸²å£1å‚æ•°é…ç½®åˆå§‹åŒ–
+	USART2_Config();//ä¸²å£2å‚æ•°é…ç½®åˆå§‹åŒ–
 	USART1_RX_DMA_Config();
   USART2_RX_DMA_Config();
 }
 
 /*
 ********************************************************************************************************
-** º¯ÊıÃû³Æ:	   Mod_fun3   
-** ¹¦ÄÜ:		     3ºÅ¹¦ÄÜÂë´¦Àí        
-** °æ±¾:         V1.0  
-** ÈÕÆÚ£º        
-** ÊäÈë²ÎÊı:     ÎŞ
-** Êä³ö²ÎÊı:     ÎŞ
-** ËµÃ÷:         ÎŞ
+** å‡½æ•°åç§°:	   Mod_fun3   
+** åŠŸèƒ½:		     3å·åŠŸèƒ½ç å¤„ç†        
+** ç‰ˆæœ¬:         V1.0  
+** æ—¥æœŸï¼š        
+** è¾“å…¥å‚æ•°:     æ— 
+** è¾“å‡ºå‚æ•°:     æ— 
+** è¯´æ˜:         æ— 
 ********************************************************************************************************
 */
 void Mod_fun3()
@@ -60,7 +60,7 @@ void Mod_fun3()
 	if((  m_ctrl_dev.rxbuf[2] == 0xff) && (m_ctrl_dev.rxbuf[3] == 0xff))
 	{
 		m_ctrl_dev.send_count = 0;
-		m_ctrl_dev.send_buf[m_ctrl_dev.send_count++] = address;   //Â·ÓÉÆ÷µØÖ·
+		m_ctrl_dev.send_buf[m_ctrl_dev.send_count++] = address;   //è·¯ç”±å™¨åœ°å€
 						
 		m_ctrl_dev.send_buf[m_ctrl_dev.send_count++] = 0x03;
 						
@@ -79,28 +79,28 @@ void Mod_fun3()
 	}else if(m_ctrl_dev.rxlen == 4){	
 		USART2_send_data(m_ctrl_dev.FFU_Data, FFU_Buffer_SIZE);
 	}else{
-		m_ctrl_dev.Lx_Flag = 1;																			//Í£Ö¹ÂÖÑ¯
+		m_ctrl_dev.Lx_Flag = 1;																			//åœæ­¢è½®è¯¢
 		USART1_send_data(m_ctrl_dev.rxbuf, m_ctrl_dev.rxlen);
-		m_ctrl_dev.Time_Flag = 1;																		//¿ªÊ¼¼ÆÊı
-		m_ctrl_dev.Time_Count = 0;                    							// ¼ÆÊıÇåÁã
+		m_ctrl_dev.Time_Flag = 1;																		//å¼€å§‹è®¡æ•°
+		m_ctrl_dev.Time_Count = 0;                    							// è®¡æ•°æ¸…é›¶
 	}
 }
 
 /*
 ********************************************************************************************************
-** º¯ÊıÃû³Æ:	   Mod_fun6  
-** ¹¦ÄÜ:		     6ºÅ¹¦ÄÜÂë´¦Àí        
-** °æ±¾:         V1.0  
-** ÈÕÆÚ£º        
-** ÊäÈë²ÎÊı:     ÎŞ
-** Êä³ö²ÎÊı:     ÎŞ
-** ËµÃ÷:         ÎŞ
+** å‡½æ•°åç§°:	   Mod_fun6  
+** åŠŸèƒ½:		     6å·åŠŸèƒ½ç å¤„ç†        
+** ç‰ˆæœ¬:         V1.0  
+** æ—¥æœŸï¼š        
+** è¾“å…¥å‚æ•°:     æ— 
+** è¾“å‡ºå‚æ•°:     æ— 
+** è¯´æ˜:         æ— 
 ********************************************************************************************************
 */
 void Mod_fun6()
 {
 	u32 Modify_add;														
-	m_ctrl_dev.Lx_Flag = 1;																			//Í£Ö¹ÂÖÑ¯
+	m_ctrl_dev.Lx_Flag = 1;																			//åœæ­¢è½®è¯¢
 	if((  m_ctrl_dev.rxbuf[2] == 0xff) && (m_ctrl_dev.rxbuf[3] == 0xff))
 	{
 		Modify_add = (m_ctrl_dev.rxbuf[4]<<8) + m_ctrl_dev.rxbuf[5];
@@ -115,39 +115,39 @@ void Mod_fun6()
 	{	
 		USART1_send_data( m_ctrl_dev.rxbuf, m_ctrl_dev.rxlen);	
 	}
-	m_ctrl_dev.Time_Flag = 1;																		//¿ªÊ¼¼ÆÊı
-	m_ctrl_dev.Time_Count = 0;                    							// ¼ÆÊıÇåÁã
+	m_ctrl_dev.Time_Flag = 1;																		//å¼€å§‹è®¡æ•°
+	m_ctrl_dev.Time_Count = 0;                    							// è®¡æ•°æ¸…é›¶
 }
 
 
 /*
 ********************************************************************************************************
-** º¯ÊıÃû³Æ:	   Mod_fun16  
-** ¹¦ÄÜ:		     16ºÅ¹¦ÄÜÂë´¦Àí        
-** °æ±¾:         V1.0  
-** ÈÕÆÚ£º        
-** ÊäÈë²ÎÊı:     ÎŞ
-** Êä³ö²ÎÊı:     ÎŞ
-** ËµÃ÷:         ÎŞ
+** å‡½æ•°åç§°:	   Mod_fun16  
+** åŠŸèƒ½:		     16å·åŠŸèƒ½ç å¤„ç†        
+** ç‰ˆæœ¬:         V1.0  
+** æ—¥æœŸï¼š        
+** è¾“å…¥å‚æ•°:     æ— 
+** è¾“å‡ºå‚æ•°:     æ— 
+** è¯´æ˜:         æ— 
 ********************************************************************************************************
 */
 void Mod_fun16()
 {
-	m_ctrl_dev.Lx_Flag = 1;																				//Í£Ö¹ÂÖÑ¯
+	m_ctrl_dev.Lx_Flag = 1;																				//åœæ­¢è½®è¯¢
 	USART1_send_data( m_ctrl_dev.rxbuf, m_ctrl_dev.rxlen);		
-	m_ctrl_dev.Time_Flag = 1;																		  //¿ªÊ¼¼ÆÊı
-	m_ctrl_dev.Time_Count = 0;                    // ¼ÆÊıÇåÁã
+	m_ctrl_dev.Time_Flag = 1;																		  //å¼€å§‹è®¡æ•°
+	m_ctrl_dev.Time_Count = 0;                    // è®¡æ•°æ¸…é›¶
 }
 
 /*
 ********************************************************************************************************
-** º¯ÊıÃû³Æ:	   Lx_Search    
-** ¹¦ÄÜ:		     ÂÖÑ¯Â·ÓÉÆ÷ÏÂµÄFFU 
-** °æ±¾:         V1.0  
-** ÈÕÆÚ£º        
-** ÊäÈë²ÎÊı:     ÎŞ
-** Êä³ö²ÎÊı:     ÎŞ
-** ËµÃ÷:         ÎŞ
+** å‡½æ•°åç§°:	   Lx_Search    
+** åŠŸèƒ½:		     è½®è¯¢è·¯ç”±å™¨ä¸‹çš„FFU 
+** ç‰ˆæœ¬:         V1.0  
+** æ—¥æœŸï¼š        
+** è¾“å…¥å‚æ•°:     æ— 
+** è¾“å‡ºå‚æ•°:     æ— 
+** è¯´æ˜:         æ— 
 ********************************************************************************************************
 */
 void Lx_Search(void)
@@ -155,12 +155,12 @@ void Lx_Search(void)
 		u16 i,j;
 		u16 crc = 0;
 		u16 rccrc = 0;
-	  u8 sendcount = 0;                                              //·¢ËÍÊı¾İ°ü¼ÆÊı
+	  u8 sendcount = 0;                                              //å‘é€æ•°æ®åŒ…è®¡æ•°
 		Start_Lx_Add = Current_Lx_Add;
 		for(i = Start_Lx_Add;i <=FFU_Count;i++)
 		{
 			m_ctrl_dev.send_count = 0;
-			m_ctrl_dev.send_buf[m_ctrl_dev.send_count++] = address;      //Â·ÓÉÆ÷µØÖ·
+			m_ctrl_dev.send_buf[m_ctrl_dev.send_count++] = address;      //è·¯ç”±å™¨åœ°å€
 				
 			m_ctrl_dev.send_buf[m_ctrl_dev.send_count++] = 0x03;
 			
@@ -174,36 +174,36 @@ void Lx_Search(void)
 			m_ctrl_dev.send_buf[m_ctrl_dev.send_count++] = crc / 256;
 			m_ctrl_dev.send_buf[m_ctrl_dev.send_count++] = crc % 256;
 			
-			Current_Lx_Add = i;																						//¼ÇÂ¼µ±Ç°ÂÖÑ¯µ½µÄFFUµØÖ·
+			Current_Lx_Add = i;																						//è®°å½•å½“å‰è½®è¯¢åˆ°çš„FFUåœ°å€
 			
-			while(sendcount < PackLost_Count)														//ÂÖÑ¯Èı´Î£¬Èı´ÎÃ»ÓĞ½ÓÊÕµ½»Ø¸´Êı¾İÅĞ¶ÏÎªµôÏßÎ´Öª
+			while(sendcount < PackLost_Count)														//è½®è¯¢ä¸‰æ¬¡ï¼Œä¸‰æ¬¡æ²¡æœ‰æ¥æ”¶åˆ°å›å¤æ•°æ®åˆ¤æ–­ä¸ºæ‰çº¿æœªçŸ¥
 			{
-				if(m_ctrl_dev.frameok == 1) return;                       //ÉÏĞĞ½ÓÊÕµ½Êı¾İ£¬Ìø³öÂÖÑ¯º¯Êı
-				if(m_ctrl_dev.S_flag == 1) break;													//ÊÕµ½Ò»Ö¡Êı¾İÌø³öÂÖÑ¯
+				if(m_ctrl_dev.frameok == 1) return;                       //ä¸Šè¡Œæ¥æ”¶åˆ°æ•°æ®ï¼Œè·³å‡ºè½®è¯¢å‡½æ•°
+				if(m_ctrl_dev.S_flag == 1) break;													//æ”¶åˆ°ä¸€å¸§æ•°æ®è·³å‡ºè½®è¯¢
 				USART1_send_data(m_ctrl_dev.send_buf, m_ctrl_dev.send_count);
 				sendcount++;
 				delay_ms(Lx_Time);
 			}
-			if((m_ctrl_dev.S_flag == 1) && (i == m_ctrl_dev.rx_buf[2]))  //ÊÕµ½µ±Ç°ÂÖÑ¯µÄFFUµÄÊı¾İ·µ»Ø
+			if((m_ctrl_dev.S_flag == 1) && (i == m_ctrl_dev.rx_buf[2]))  //æ”¶åˆ°å½“å‰è½®è¯¢çš„FFUçš„æ•°æ®è¿”å›
 			{
-				crc=mc_check_crc16(&m_ctrl_dev.rx_buf[0],m_ctrl_dev.rx_len-2);       //¼ÆËãĞ£ÑéÖµ
-				rccrc=m_ctrl_dev.rx_buf[m_ctrl_dev.rx_len-2]*256 + m_ctrl_dev.rx_buf[m_ctrl_dev.rx_len-1];    //ÊÕµ½µÄĞ£ÑéÖµ
+				crc=mc_check_crc16(&m_ctrl_dev.rx_buf[0],m_ctrl_dev.rx_len-2);       //è®¡ç®—æ ¡éªŒå€¼
+				rccrc=m_ctrl_dev.rx_buf[m_ctrl_dev.rx_len-2]*256 + m_ctrl_dev.rx_buf[m_ctrl_dev.rx_len-1];    //æ”¶åˆ°çš„æ ¡éªŒå€¼
 				if(crc == rccrc)
 				{
 					for(j = 0;j < EveryPack_DataCount;j++)
 					{
-						m_ctrl_dev.FFU_Data[(i-1) * EveryPack_DataCount + j] = m_ctrl_dev.rx_buf[j];  //½«½ÓÊÕµÄÊı¾İ¸³Öµ¸øFFUÊı¾İ»º³åÇø
+						m_ctrl_dev.FFU_Data[(i-1) * EveryPack_DataCount + j] = m_ctrl_dev.rx_buf[j];  //å°†æ¥æ”¶çš„æ•°æ®èµ‹å€¼ç»™FFUæ•°æ®ç¼“å†²åŒº
 					}
 				}
-				m_ctrl_dev.S_flag = 0;                                     //ÏÂĞĞ½ÓÊÕflagÖÃ0
-				m_ctrl_dev.rx_len = 0;																		 //ÏÂĞĞ½ÓÊÕÊı¾İ¼ÆÊıÇåÁã
-				sendcount = 0;																						 //·¢ËÍÊı¾İ°ü¼ÆÊıÇåÁã
-			}else{																											 //Ã»ÓĞÊÕµ½Êı¾İ£¬FFUµôÏßÎ´Öª×´Ì¬
+				m_ctrl_dev.S_flag = 0;                                     //ä¸‹è¡Œæ¥æ”¶flagç½®0
+				m_ctrl_dev.rx_len = 0;																		 //ä¸‹è¡Œæ¥æ”¶æ•°æ®è®¡æ•°æ¸…é›¶
+				sendcount = 0;																						 //å‘é€æ•°æ®åŒ…è®¡æ•°æ¸…é›¶
+			}else{																											 //æ²¡æœ‰æ”¶åˆ°æ•°æ®ï¼ŒFFUæ‰çº¿æœªçŸ¥çŠ¶æ€
 				for(j = 0;j < EveryPack_DataCount;j++)
 				{
-					m_ctrl_dev.FFU_Data[(i-1) * EveryPack_DataCount + j] = 0x00;  						 //µôÏßÎ´ÖªFFUÊı¾İ¸³ÖµÎª0
+					m_ctrl_dev.FFU_Data[(i-1) * EveryPack_DataCount + j] = 0x00;  						 //æ‰çº¿æœªçŸ¥FFUæ•°æ®èµ‹å€¼ä¸º0
 				}
-				sendcount = 0;																						 //·¢ËÍÊı¾İ°ü¼ÆÊıÇåÁã
+				sendcount = 0;																						 //å‘é€æ•°æ®åŒ…è®¡æ•°æ¸…é›¶
 			}
 			if(Current_Lx_Add == 30)  Current_Lx_Add = 1;								
 			m_ctrl_dev.send_count = 0;
@@ -212,13 +212,13 @@ void Lx_Search(void)
 
 /*
 ********************************************************************************************************
-** º¯ÊıÃû³Æ:	   Modbus_Event    
-** ¹¦ÄÜ:		     modbusÊÂ¼ş´¦Àíº¯Êı       
-** °æ±¾:         V1.0  
-** ÈÕÆÚ£º        
-** ÊäÈë²ÎÊı:     ÎŞ
-** Êä³ö²ÎÊı:     ÎŞ
-** ËµÃ÷:         ÎŞ
+** å‡½æ•°åç§°:	   Modbus_Event    
+** åŠŸèƒ½:		     modbusäº‹ä»¶å¤„ç†å‡½æ•°       
+** ç‰ˆæœ¬:         V1.0  
+** æ—¥æœŸï¼š        
+** è¾“å…¥å‚æ•°:     æ— 
+** è¾“å‡ºå‚æ•°:     æ— 
+** è¯´æ˜:         æ— 
 ********************************************************************************************************
 */
 void Modbus_Event()
@@ -231,22 +231,22 @@ void Modbus_Event()
 	}
 	if(m_ctrl_dev.frameok == 1)
 	{
-		crc=mc_check_crc16(&m_ctrl_dev.rxbuf[0],m_ctrl_dev.rxlen-2);       //¼ÆËãĞ£ÑéÖµ
-		rccrc=m_ctrl_dev.rxbuf[m_ctrl_dev.rxlen-2]*256 + m_ctrl_dev.rxbuf[m_ctrl_dev.rxlen-1];    //ÊÕµ½µÄĞ£ÑéÖµ
+		crc=mc_check_crc16(&m_ctrl_dev.rxbuf[0],m_ctrl_dev.rxlen-2);       //è®¡ç®—æ ¡éªŒå€¼
+		rccrc=m_ctrl_dev.rxbuf[m_ctrl_dev.rxlen-2]*256 + m_ctrl_dev.rxbuf[m_ctrl_dev.rxlen-1];    //æ”¶åˆ°çš„æ ¡éªŒå€¼
 		if(crc == rccrc)
 		{
-			if(m_ctrl_dev.rxbuf[0] == address)    //ÅĞ¶ÏÊÇ·ñÊÇ·¢¸ø±¾»úµÄÊı¾İ
+			if(m_ctrl_dev.rxbuf[0] == address)    //åˆ¤æ–­æ˜¯å¦æ˜¯å‘ç»™æœ¬æœºçš„æ•°æ®
 			{
 				switch( m_ctrl_dev.rxbuf[1])
 				{
 					case 0x03:
-						Mod_fun3();								//3ºÅ¹¦ÄÜÂë´¦Àí	
+						Mod_fun3();								//3å·åŠŸèƒ½ç å¤„ç†	
 						break;
 					case 0x06:
-						Mod_fun6();								//6ºÅ¹¦ÄÜÂë´¦Àí	
+						Mod_fun6();								//6å·åŠŸèƒ½ç å¤„ç†	
 						break;
 					case 0x16:
-						Mod_fun16();							//16ºÅ¹¦ÄÜÂë´¦Àí	
+						Mod_fun16();							//16å·åŠŸèƒ½ç å¤„ç†	
 						break;
 				}				
 			}
